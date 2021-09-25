@@ -1,0 +1,89 @@
+users
+	id - integer
+	name - string
+	email - string
+	password - string
+	is_active - boolean
+	profile_pic - string
+	role_id - integet
+	created_at - datetime
+	updated_at - datetime
+
+roles
+	id - integer
+	slug - string
+	title - string
+	created_at - datetime
+	updated_at - datetime
+
+permissions
+	id - integer
+	slug - string
+	title - string
+	created_at - datetime
+	updated_at - datetime
+
+role_permissions
+	id - integer
+	role_id - integer
+	permission_id - integer
+	created_at -datetime
+	updated_at - datetime
+
+companies
+	id - integer
+	email - string
+	name - string
+	address - string
+	city - string
+	zipcode - integer
+	phone - integer
+	logo - string
+	is_active - boolean
+	created_at - datetime
+	updated_at - datetime
+
+categories
+	id - integer
+	company_id - integer
+	name - string
+	is_active - boolean
+	created_at - datetime
+	updated_at - datetime
+
+products
+	id - bigInteger
+	company_id - integer
+	category_id - integer
+	name - string
+	hsn_code - string
+	product_code - string
+	gst_rate - interger
+	product_volume - string
+	part_no - string
+	is_maschine_part - boolean
+	image - string
+	is_active - boolean
+	minimum_selling_price - decimal
+	selling_price - decimal
+	created_at - datetime
+	update_at - datetime
+
+related_products
+	id - integer
+	product_id - integer
+	related_product - integer
+	created_at - datetime
+	updated_at -datetime
+
+purchases
+purchase_returns
+sales
+sale_returns
+payments
+
+
+
+
+
+
