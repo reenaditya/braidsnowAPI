@@ -8,6 +8,7 @@ use App\User;
 use App\UserService;
 use DB;
 use Hash;
+use Str;
 
 class RegistrationController extends Controller
 {
@@ -15,15 +16,26 @@ class RegistrationController extends Controller
 
     public function register(Request $request)
     {
+    	
     	DB::beginTransaction();
     	try {
-    		
+			
+			$token = Str::random(191);
+
     		$this->validationForm($request)
     		->storeUser($request)
     		->storeService($request);
 
+    		$this->user->api_token = $token;
+    		$this->user->save();
+
     		DB::commit();
-    		return response()->json(['status' => true,'message' => 'Register successfull']);
+    		return response()->json([
+    			'status' => true,
+    			'message' => 'Register successfull',
+    			'token' => $token,
+    			'user' => $this->user->load('userServices')
+    		]);
 
     	} catch (Exception $e) {
 
@@ -38,10 +50,10 @@ class RegistrationController extends Controller
     	$request->validate([
     		'name' => ['required','min:3','max:255'],
     		'email' => ['required','email','unique:users,email'],
-    		'avatar' => ['sometimes','image','size:244'],
+    		'avatar' => ['sometimes','image','max:244'],
     		'state' => ['required','min:3','max:255'],
     		'city' => ['required','min:3','max:255'],
-    		'zipcode' => ['required','digits:8'],
+    		'zipcode' => ['required','max:8'],
     		'business_name' => ['nullable','string'],
     		'website_link' => ['nullable','string'],
     		'business_phone_number' => ['required','numeric'],
@@ -64,6 +76,7 @@ class RegistrationController extends Controller
 
     private function storeUser(Request $request)
     {
+
     	$this->user->name = $request->name;
     	$this->user->email = $request->email;
     	if ($request->hasFile('avatar')) {
@@ -72,7 +85,7 @@ class RegistrationController extends Controller
     	$this->user->state = $request->state;
     	$this->user->city = $request->city;
     	$this->user->zipcode = $request->zipcode;
-    	$this->user->business_name = $request->business;
+    	$this->user->business_name = $request->business_name;
     	$this->user->website_link = $request->webiste_link;
     	$this->user->business_phone_number = $request->businessPhoneNumber;
     	$this->user->introduction = $request->introduction;
@@ -86,6 +99,7 @@ class RegistrationController extends Controller
     	$this->user->can_you_provide_hair = $request->can_you_provide_hair;
     	$this->user->do_you_wash_hair = $request->do_you_wash_hair;
     	$this->user->password = Hash::make($request->password);
+    	$this->user->role_id = 2;
     	$this->user->save();
 
     	return $this;
@@ -93,16 +107,14 @@ class RegistrationController extends Controller
 
     private function storeService(Request $request)
     {
-    	if (count($request->services)) {
+    	if (count(json_decode($request->services))) {
     		
-    		foreach ($request->services as $key => $service) {
-    			
-    			$service = (object) $service;
+    		foreach (json_decode($request->services) as  $service) {
 
     			$this->user->userServices()->create([
-    				'service' => $service->service,
-    				'hour' => $service->hour,
-    				'min' => $service->min,
+    				'service' => $service->services,
+    				'hour' => $service->hours,
+    				'min' => $service->minute,
     				'price' => $service->price
     			]);
     		}

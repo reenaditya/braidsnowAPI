@@ -19,18 +19,25 @@ class LoginController extends Controller
 
     	$user = User::where('email',$request->email)
     	->where('status',1)
+    	->with('userServices')
     	->first();
 
     	if ($user && Hash::check($request->password, $user->password)) {
     		
-    		$user->api_token = Str::random(191);
+    		$token = Str::random(191);
+
+    		$user->api_token = $token;
     		$user->save();
 
-    		return response()->json(['status'=> true, 'data' => $user]);
+    		return response()->json([
+    			'status' => true,
+    			'token' => $token,
+    			'user' => $user
+    		]);
 
     	}else{
 
-    		return response()->json(['status'=> false, 'error' => 'Email or password is incorrect!']);
+    		return response()->json(['status'=> false,'errors' => ['email'=>['Email or password is incorrect!']]],443);
     	}
     }
 }

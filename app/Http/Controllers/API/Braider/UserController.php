@@ -10,11 +10,11 @@ use Hash;
 
 class UserController extends Controller
 {
-	private function __construct(private User $user){}
+	public function __construct(private User $user){}
 
     public function userInformation(Request $request)
     {
-    	return response()->json(['status' => true,'user' => $request->user()]);
+    	return response()->json(['status' => true,'data' => $request->user()->load('userServices')]);
     }
     
     public function update(Request $request)
@@ -126,7 +126,7 @@ class UserController extends Controller
     		return response()->json(['status' => true,'message' => 'Password Successfully Changed']);
 
     	}else{
-    		return response()->json(['status' => false,'error' => 'Incorrect Old Password']);
+    		return response()->json(['status' => false,'errors' => ['old_password'=>['Incorrect Old Password']]],443);
     	}
     }
 

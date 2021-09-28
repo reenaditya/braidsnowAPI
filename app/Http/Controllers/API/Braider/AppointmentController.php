@@ -19,7 +19,8 @@ class AppointmentController extends Controller
 	    	$appointment = $this->appointment
 	    	->with('user','appointmentBookedServices.service')
 	    	->where('braider_id',Auth::id())
-	    	->paginate(15);
+	    	->get();
+	    	//->paginate(15);
 
 	    	return response()->json(['status' => true,'data' => $appointment]);
 
@@ -38,7 +39,8 @@ class AppointmentController extends Controller
 	    	->with('user','appointmentBookedServices.service')
 	    	->where('braider_id',Auth::id())
 	    	->whereDate('schedule_date',Carbon::today())
-	    	->paginate(15);
+	    	->get();
+	    	//->paginate(15);
 
 	    	return response()->json(['status' => true,'data' => $appointment]);
 
@@ -56,8 +58,9 @@ class AppointmentController extends Controller
 	    	$appointment = $this->appointment
 	    	->with('user','appointmentBookedServices.service')
 	    	->where('braider_id',Auth::id())
-	    	->whereDate('schedule_date',Carbon::today())
-	    	->paginate(15);
+	    	->whereDate('schedule_date',Carbon::tomorrow())
+	    	->get();
+	    	//->paginate(15);
 
 	    	return response()->json(['status' => true,'data' => $appointment]);
 
@@ -71,10 +74,10 @@ class AppointmentController extends Controller
     {
     	try {
     		
-	    	$appointment = $this->appointment
+	    	$appointment = $this->appointment->select('email_id')
 	    	->where('braider_id',Auth::id())
 	    	->groupBy('email_id')
-	    	->count();
+	    	->get();
 
 	    	return response()->json(['status' => true,'data' => $appointment]);
 
@@ -88,11 +91,11 @@ class AppointmentController extends Controller
     {
     	try {
     		
-	    	$appointment = $this->appointment
+	    	$appointment = $this->appointment->select('email_id')
 	    	->where('braider_id',Auth::id())
 	    	->groupBy('email_id')
 	    	->whereDate('schedule_date',Carbon::today())
-	    	->count();
+	    	->get();
 
 	    	return response()->json(['status' => true,'data' => $appointment]);
 
