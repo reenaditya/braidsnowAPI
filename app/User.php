@@ -58,4 +58,9 @@ class User extends Authenticatable
         return $this->hasMany(UserService::class);
     }
 
+    public function portfolio()
+    {
+        return $this->hasMany(Portfolio::class,'braider_id');
+    }
+
 }

@@ -83,12 +83,33 @@ Route::group(['prefix' => 'braider','namespace' => 'API\Braider','middleware' =>
 	|---------------------------------------------------------------------------
 	*/
 	Route::get('appointment/new-customer','AppointmentController@newCustomer');
+
+	/*
+	|---------------------------------------------------------------------------
+	|	get Customer
+	|---------------------------------------------------------------------------
+	*/
+	Route::get('customer/index','MyCustomerController@index');
 	/*
 	|---------------------------------------------------------------------------
 	|	Total Appointment
 	|---------------------------------------------------------------------------
 	*/
 	Route::get('appointment/total-appointment','AppointmentController@totalAppointment');
+
+	/*
+	|---------------------------------------------------------------------------
+	|	upload Portfoliio 
+	|---------------------------------------------------------------------------
+	*/
+	Route::post('portfolio/store','PortfolioController@store');
+
+	/*
+	|---------------------------------------------------------------------------
+	|	get Portfoliio 
+	|---------------------------------------------------------------------------
+	*/
+	Route::post('portfolio/index','PortfolioController@index');
 	/*
 	|---------------------------------------------------------------------------
 	|	User Information
@@ -114,6 +135,82 @@ Route::group(['prefix' => 'braider','namespace' => 'API\Braider','middleware' =>
 	*/
 	Route::post('user/logout','UserController@logout');
 
+});
+
+Route::group(['prefix' => 'customer','namespace' => 'API\Customer'], function() {
+	/*
+	|---------------------------------------------------------------------------
+	|	Register Customer
+	|---------------------------------------------------------------------------
+	*/
+	Route::post('register','Auth\RegisterController@register');
+
+	Route::post('login','Auth\LoginController@login');
+
+	
+});
+/*
+|---------------------------------------------------------------------------
+|	Customer Auth Routes
+|---------------------------------------------------------------------------
+*/
+Route::group(['prefix' => 'customer','namespace' => 'API\Customer','middleware' => 'auth:api'], function() {
+
+	/*
+	|---------------------------------------------------------------------------
+	|	Favourite Customer
+	|---------------------------------------------------------------------------
+	*/
+
+	Route::get('favourite','FavouriteController@getFovourite');
+
+	/*
+	|---------------------------------------------------------------------------
+	|	get profile information
+	|---------------------------------------------------------------------------
+	*/
+
+	Route::get('profile/edit','ProfileController@getInformation');
+
+	/*
+	|---------------------------------------------------------------------------
+	|	update profile
+	|---------------------------------------------------------------------------
+	*/
+	Route::post('profile/update','ProfileController@update');
+
+	/*
+	|---------------------------------------------------------------------------
+	|	Customer Change Password
+	|---------------------------------------------------------------------------
+	*/
+	Route::post('profile/change-password','ProfileController@changePassword');
+
+	/*
+	|---------------------------------------------------------------------------
+	|	Customer logout
+	|---------------------------------------------------------------------------
+	*/
+	Route::post('logout','ProfileController@logout');
+
+});
+
+/*
+|---------------------------------------------------------------------------
+|	Customer Auth Routes
+|---------------------------------------------------------------------------
+*/
+Route::group(['prefix' => 'homepage','namespace' => 'API'], function() {
+
+	/*
+	|---------------------------------------------------------------------------
+	|	Homepage Braider list
+	|---------------------------------------------------------------------------
+	*/
+
+	Route::get('top-braider','HomepageController@getTopBraider');
+
+	Route::get('service', 'HomepageController@getService');
 });
 
 

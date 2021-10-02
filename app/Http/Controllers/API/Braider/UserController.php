@@ -14,7 +14,9 @@ class UserController extends Controller
 
     public function userInformation(Request $request)
     {
-    	return response()->json(['status' => true,'data' => $request->user()->load('userServices')]);
+    	$data = $request->user()->load('userServices','portfolio');
+    	
+    	return response()->json(['status' => true,'data' => $data ]);
     }
     
     public function update(Request $request)

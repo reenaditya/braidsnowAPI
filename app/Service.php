@@ -35,4 +35,9 @@ class Service extends Model
         'title',
         'sorting',
     ];
+
+    public function userServices()
+    {
+    	return $this->hasMany(UserService::class,'service','title');
+    }
 }
