@@ -130,6 +130,12 @@ Route::group(['prefix' => 'braider','namespace' => 'API\Braider','middleware' =>
 	Route::post('user/change-password','UserController@changePassword');
 	/*
 	|---------------------------------------------------------------------------
+	|	Braider Schedule Timing
+	|---------------------------------------------------------------------------
+	*/
+	Route::post('schedule-timing','ScheduleTimingController@index');
+	/*
+	|---------------------------------------------------------------------------
 	|	Braider Logout
 	|---------------------------------------------------------------------------
 	*/
