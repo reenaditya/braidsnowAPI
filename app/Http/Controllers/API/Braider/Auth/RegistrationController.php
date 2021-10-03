@@ -50,7 +50,7 @@ class RegistrationController extends Controller
     	$request->validate([
     		'name' => ['required','min:3','max:255'],
     		'email' => ['required','email','unique:users,email'],
-    		'avatar' => ['sometimes','image','max:244'],
+    		'avatar' => ['nullable','image','max:244'],
     		'state' => ['required','min:3','max:255'],
     		'city' => ['required','min:3','max:255'],
     		'zipcode' => ['required','max:8'],

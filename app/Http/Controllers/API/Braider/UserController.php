@@ -42,11 +42,11 @@ class UserController extends Controller
     {
     	$request->validate([
     		'name' => ['required','min:3','max:255'],
-    		'email' => ['required','email','unique:users,email'],
-    		'avatar' => ['sometimes','image','size:244'],
+    		
+    		'avatar' => ['nullable','image','max:244'],
     		'state' => ['required','min:3','max:255'],
     		'city' => ['required','min:3','max:255'],
-    		'zipcode' => ['required','digits:8'],
+    		'zipcode' => ['required','max:8'],
     		'business_name' => ['nullable','string'],
     		'website_link' => ['nullable','string'],
     		'business_phone_number' => ['required','numeric'],
@@ -54,14 +54,13 @@ class UserController extends Controller
     		'special_introduction' => ['required'],
     		'policy_procedure' => ['required'],
     		'booking_deposit_amount' => ['required','numeric'],
-    		'coupon_code' => ['nullable','string'],
+    		
     		'do_you_braid_out_of_a_shop' => ['sometimes','boolean'],
     		'do_you_braid_from_home' => ['sometimes','boolean'],
     		'are_you_a_mobile' => ['sometimes','boolean'],
     		'can_you_provide_hair' => ['sometimes','boolean'],
     		'do_you_wash_hair' => ['sometimes','boolean'],
-    		'password' => ['required','min:6','max:50','confirmed'],
-    		'password_confirmation' => ['required','min:6','max:50'],
+    		
     	]);
 
     	return $this;
@@ -69,7 +68,7 @@ class UserController extends Controller
     private function storeUser(Request $request)
     {
     	$this->user->name = $request->name;
-    	$this->user->email = $request->email;
+    	
     	if ($request->hasFile('avatar')) {
     		$this->user->avatar = $request->avatar->store('braider/profile','public');
     	}
@@ -83,7 +82,7 @@ class UserController extends Controller
     	$this->user->special_introduction = $request->special_introduction;
     	$this->user->policy_procedure = $request->policy_procedure;
     	$this->user->booking_deposit_amount = $request->booking_deposit_amount;
-    	$this->user->coupon_code = $request->coupon_code;
+    	
     	$this->user->do_you_braid_out_of_a_shop = $request->do_you_braid_out_of_a_shop;
     	$this->user->do_you_braid_from_home = $request->do_you_braid_from_home;
     	$this->user->are_you_a_mobile = $request->are_you_a_mobile;
